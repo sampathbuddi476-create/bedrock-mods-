@@ -1,0 +1,6 @@
+{
+  "name": "Bedrock Studio",
+  "description": "AI-powered Minecraft Bedrock mod & addon maker with Gemini chat, smart code generation, search grounding, and direct 1-tap game folder export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
