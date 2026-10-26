@@ -1,13 +1,38 @@
-- name: Android APK builder
-  # You may pin to the exact commit or the version.
-  # uses: kevingopalan/action_android_build@48f8ff1d1aeb7cbe91406123fe25b7ff32bef57f
-  uses: kevingopalan/action_android_build@v1
-  with:
-    # Github secret token to allow automated publishing of APK to release.
-    GITHUB_TOKEN: # optional
-    # CI token
-    CI_TOKEN: # optional
-    # App Name
-    APP_NAME: # optional
-    # Package Type
-    TYPEPACKAGE: # optional
+name: Build Android APK
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Upload Debug APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bedrock-mods-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          
